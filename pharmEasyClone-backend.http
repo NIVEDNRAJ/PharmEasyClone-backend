@@ -1,0 +1,6 @@
+@pharmEasyClone_backend_HostAddress = http://localhost:5204
+
+GET {{pharmEasyClone_backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
