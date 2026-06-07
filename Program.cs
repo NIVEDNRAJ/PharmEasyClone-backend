@@ -22,9 +22,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // ==========================================
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AngularClientPolicy", policy =>
+    options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:4200") // Default Angular local server port
+        policy.SetIsOriginAllowed(origin => true)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -48,6 +48,8 @@ builder.Services.AddHttpClient<IEmailService, BrevoEmailService>();
 // ==========================================
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["Secret"] ?? "A_Very_Secure_And_Ultra_Long_Secret_Key_For_PharmEasy_Clone_Authentication_2026";
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -100,9 +102,32 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Custom CORS Middleware to handle all origins, headers, and OPTIONS preflights
+app.Use(async (context, next) =>
+{
+    var origin = context.Request.Headers["Origin"].ToString();
+    if (!string.IsNullOrEmpty(origin))
+    {
+        context.Response.Headers["Access-Control-Allow-Origin"] = origin;
+        context.Response.Headers["Access-Control-Allow-Headers"] = "*";
+        context.Response.Headers["Access-Control-Allow-Methods"] = "*";
+        context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
+    }
+
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.StatusCode = 200;
+        return;
+    }
+
+    await next();
+});
+
 // ==========================================
 // 6. HTTP REQUEST PIPELINE (MIDDLEWARE)
 // ==========================================
+app.UseRouting();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -110,9 +135,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// CORS must be executed before Authentication and Authorization
-app.UseCors("AngularClientPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

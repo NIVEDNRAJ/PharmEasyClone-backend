@@ -20,6 +20,10 @@ public class Product
 
     public bool RequiresPrescription { get; set; } = false;
 
+    public bool IsApproved { get; set; } = true;
+
+    public Guid? CreatedByVendorId { get; set; }
+
     // Many-to-Many Relationship to Vendors via Inventory
     public ICollection<VendorInventory> Inventories { get; set; } = new List<VendorInventory>();
 }
