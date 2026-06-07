@@ -9,3 +9,11 @@ public class BookLabTestDto
     public DateTime BookingDate { get; set; }
     public string TimeSlot { get; set; } = "Morning (8 AM - 12 PM)";
 }
+
+public class ConfirmLabTestPaymentDto
+{
+    public Guid BookingId { get; set; }
+    public string? RazorpayOrderId { get; set; }
+    public string? RazorpayPaymentId { get; set; }
+    public string? RazorpaySignature { get; set; }
+}

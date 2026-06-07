@@ -26,6 +26,8 @@ public class LabTestBooking
     public string TimeSlot { get; set; } = "Morning (8 AM - 12 PM)";
     public decimal PaidAmount { get; set; }
     public string PaymentStatus { get; set; } = "Pending";
+    public string? RazorpayOrderId { get; set; }
+    public string? RazorpayPaymentId { get; set; }
     public string BookingStatus { get; set; } = "Scheduled";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

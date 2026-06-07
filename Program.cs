@@ -7,6 +7,22 @@ using pharmEasyClone_backend.Data;
 using pharmEasyClone_backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Load environment variables from .env file if it exists
+var envPath = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+if (File.Exists(envPath))
+{
+    foreach (var line in File.ReadAllLines(envPath))
+    {
+        var parts = line.Split('=', 2);
+        if (parts.Length == 2)
+        {
+            var key = parts[0].Trim();
+            var val = parts[1].Trim();
+            Environment.SetEnvironmentVariable(key, val);
+        }
+    }
+}
     
 // ==========================================
 // 1. DATABASE CONFIGURATION (MySQL)
@@ -37,8 +53,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Bind settings from appsettings.json
-builder.Services.Configure<BrevoSettings>(builder.Configuration.GetSection("BrevoSettings"));
+// Bind settings from appsettings.json and environment variables
+builder.Services.Configure<BrevoSettings>(options =>
+{
+    var section = builder.Configuration.GetSection("BrevoSettings");
+    options.ApiKey = Environment.GetEnvironmentVariable("BREVO_API_KEY") ?? section["ApiKey"] ?? "";
+    options.SenderEmail = section["SenderEmail"] ?? "";
+    options.SenderName = section["SenderName"] ?? "";
+});
 
 // Register custom services for Dependency Injection
 builder.Services.AddHttpClient<IEmailService, BrevoEmailService>();
