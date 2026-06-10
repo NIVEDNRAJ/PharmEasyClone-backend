@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pharmEasyClone_backend.Data;
 
@@ -11,9 +12,11 @@ using pharmEasyClone_backend.Data;
 namespace pharmEasyClone_backend.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260606130827_AddPrescriptionsAndLabTests")]
+    partial class AddPrescriptionsAndLabTests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,9 +130,6 @@ namespace pharmEasyClone_backend.Data.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Languages")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -150,8 +150,6 @@ namespace pharmEasyClone_backend.Data.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Doctors");
                 });
@@ -230,12 +228,6 @@ namespace pharmEasyClone_backend.Data.Migrations
 
                     b.Property<string>("Pincode")
                         .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RazorpayOrderId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RazorpayPaymentId")
                         .HasColumnType("longtext");
 
                     b.Property<string>("TimeSlot")
@@ -525,15 +517,6 @@ namespace pharmEasyClone_backend.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("pharmEasyClone_backend.Models.Doctor", b =>
-                {
-                    b.HasOne("pharmEasyClone_backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

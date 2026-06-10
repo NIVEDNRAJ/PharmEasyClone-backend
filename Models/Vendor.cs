@@ -15,6 +15,9 @@ namespace pharmEasyClone_backend.Models
 
         public bool IsApproved { get; set; } = false;
 
+        public Guid? UserId { get; set; }
+        public User? User { get; set; }
+
         // Fully declared collection navigation property
         public ICollection<VendorInventory> Inventories { get; set; } = new List<VendorInventory>();
     }

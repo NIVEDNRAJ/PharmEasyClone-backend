@@ -12,6 +12,9 @@ public class User
     public string Email { get; set; } = string.Empty;
 
     public string? FullName { get; set; }
+
+    [Required]
+    public string Role { get; set; } = "Customer"; // Customer, Vendor, Admin, Doctor
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

@@ -12,6 +12,14 @@ namespace pharmEasyClone_backend.Data
         public DbSet<Vendor> Vendors { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<VendorInventory> VendorInventories { get; set; } = null!;
+        public DbSet<Doctor> Doctors { get; set; } = null!;
+        public DbSet<Coupon> Coupons { get; set; } = null!;
+        public DbSet<ConsultationBooking> ConsultationBookings { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<OrderItem> OrderItems { get; set; } = null!;
+        public DbSet<Prescription> Prescriptions { get; set; } = null!;
+        public DbSet<LabTest> LabTests { get; set; } = null!;
+        public DbSet<LabTestBooking> LabTestBookings { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +47,18 @@ namespace pharmEasyClone_backend.Data
             modelBuilder.Entity<VendorInventory>()
                 .Property(vi => vi.DiscountPercentage)
                 .HasPrecision(5, 2);
+
+            modelBuilder.Entity<LabTest>()
+                .Property(t => t.Mrp)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<LabTest>()
+                .Property(t => t.DiscountedPrice)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<LabTestBooking>()
+                .Property(b => b.PaidAmount)
+                .HasPrecision(18, 2);
         }
     }
 }

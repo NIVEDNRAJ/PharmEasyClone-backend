@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pharmEasyClone_backend.Data;
 
@@ -11,9 +12,11 @@ using pharmEasyClone_backend.Data;
 namespace pharmEasyClone_backend.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260606114316_AddRoleBasedAccess")]
+    partial class AddRoleBasedAccess
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,9 +130,6 @@ namespace pharmEasyClone_backend.Data.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Languages")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -151,107 +151,7 @@ namespace pharmEasyClone_backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("pharmEasyClone_backend.Models.LabTest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("DiscountPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("DiscountedPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<decimal>("Mrp")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LabTests");
-                });
-
-            modelBuilder.Entity("pharmEasyClone_backend.Models.LabTestBooking", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("BookingStatus")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("LabTestId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<decimal>("PaidAmount")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("PatientName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Pincode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RazorpayOrderId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RazorpayPaymentId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("TimeSlot")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LabTestId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("LabTestBookings");
                 });
 
             modelBuilder.Entity("pharmEasyClone_backend.Models.Order", b =>
@@ -356,47 +256,6 @@ namespace pharmEasyClone_backend.Data.Migrations
                     b.ToTable("OtpVerifications");
                 });
 
-            modelBuilder.Entity("pharmEasyClone_backend.Models.Prescription", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("DeliveryAddress")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PatientName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Pincode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Prescriptions");
-                });
-
             modelBuilder.Entity("pharmEasyClone_backend.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -479,8 +338,6 @@ namespace pharmEasyClone_backend.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Vendors");
                 });
 
@@ -529,34 +386,6 @@ namespace pharmEasyClone_backend.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("pharmEasyClone_backend.Models.Doctor", b =>
-                {
-                    b.HasOne("pharmEasyClone_backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("pharmEasyClone_backend.Models.LabTestBooking", b =>
-                {
-                    b.HasOne("pharmEasyClone_backend.Models.LabTest", "LabTest")
-                        .WithMany()
-                        .HasForeignKey("LabTestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("pharmEasyClone_backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LabTest");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("pharmEasyClone_backend.Models.Order", b =>
                 {
                     b.HasOne("pharmEasyClone_backend.Models.User", "User")
@@ -585,26 +414,6 @@ namespace pharmEasyClone_backend.Data.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("pharmEasyClone_backend.Models.Prescription", b =>
-                {
-                    b.HasOne("pharmEasyClone_backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("pharmEasyClone_backend.Models.Vendor", b =>
-                {
-                    b.HasOne("pharmEasyClone_backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("pharmEasyClone_backend.Models.VendorInventory", b =>
